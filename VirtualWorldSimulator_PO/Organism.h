@@ -1,24 +1,23 @@
 #pragma once
 #include "World.h"
-struct Location
-{
-	int x;
-	int y;
-};
 
+class World;
 
 class Organism
 {
-private:
+protected:
 	int strength;
 	int initiative;
-	Location location;
-	World world;
+	int xPos;
+	int yPos;
+	World& world;
 
 public:
-	Organism();
-	virtual void action() = 0;
-	virtual void collision() = 0;
-	virtual void print() = 0;
-	~Organism();
+	Organism(World& world);
+	//Organism(int strength, int initiative, int xPos, int yPos, World& world);
+	//Organism(int strength, int initiative, int xPos, int yPos);
+	virtual void Action(World& world) = 0;
+	virtual void Collision(World& world) = 0;
+	virtual void Print() = 0;
+	//~Organism();
 };

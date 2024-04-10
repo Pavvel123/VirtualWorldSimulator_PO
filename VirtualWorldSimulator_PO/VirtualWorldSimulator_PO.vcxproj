@@ -140,6 +140,7 @@
     <ClCompile Include="Sonchus.cpp" />
     <ClCompile Include="SosnowskysHogweed.cpp" />
     <ClCompile Include="Tortoise.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="VirtualWorldSimulator_PO.cpp" />
     <ClCompile Include="Wolf.cpp" />
     <ClCompile Include="World.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Sonchus.h" />
     <ClInclude Include="SosnowskysHogweed.h" />
     <ClInclude Include="Tortoise.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Wolf.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

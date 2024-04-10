@@ -1,14 +1,22 @@
 #pragma once
-#include <list>
+#include <vector>
 #include "Organism.h"
+
+using std::vector;
+
+class Organism;
+
 class World
 {
 private:
-	std::list<Organism> organisms;
+	vector<Organism*> organisms;
+	int width;
+	int height;
 
 public:
-	World();
-	void makeTurn();
-	void print();
+	World(unsigned width, unsigned height, vector<Organism*> organisms);
+	World(unsigned width, unsigned height);
+	void MakeTurn();
+	void Print();
 	~World();
 };

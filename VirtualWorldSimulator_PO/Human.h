@@ -3,8 +3,9 @@
 class Human : public Animal
 {
 public:
-	Human();
-	void action() override; // TODO poruszanie sie
-	void collision() override; // TODO specjalna umiejetnosc
+	Human(int strength, int initiative, int xPos, int yPos, World& world);
+	void Action(World& world) override; // TODO poruszanie sie
+	void Collision(World& world) override; // TODO specjalna umiejetnosc
+	void Print() override;
 	~Human();
 };
