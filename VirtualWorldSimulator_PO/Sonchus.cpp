@@ -1,9 +1,11 @@
 #include "Sonchus.h"
+#include "MyFunctions.h"
+#include <iostream>
 
-Sonchus::Sonchus(int strength, int xPos, int yPos, World& world)
+Sonchus::Sonchus(int xPos, int yPos, World& world)
 	: Plant(world)
 {
-	Organism::strength = strength;
+	Organism::strength = 0;
 	Organism::initiative = 0;
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
@@ -20,6 +22,9 @@ void Sonchus::Collision(World& world)
 
 void Sonchus::Print()
 {
+	Organism::Print();
+	SetTextColour(174);
+	std::cout << "SN";
 }
 
 Sonchus::~Sonchus()

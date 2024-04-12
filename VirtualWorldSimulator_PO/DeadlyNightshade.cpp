@@ -1,9 +1,11 @@
 #include "DeadlyNightshade.h"
+#include "MyFunctions.h"
+#include <iostream>
 
-DeadlyNightshade::DeadlyNightshade(int strength, int xPos, int yPos, World& world)
+DeadlyNightshade::DeadlyNightshade(int xPos, int yPos, World& world)
 	: Plant(world)
 {
-	Organism::strength = strength;
+	Organism::strength = 99;
 	Organism::initiative = 0;
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
@@ -20,6 +22,9 @@ void DeadlyNightshade::Collision(World& world)
 
 void DeadlyNightshade::Print()
 {
+	Organism::Print();
+	SetTextColour(160);
+	std::cout << "DN";
 }
 
 DeadlyNightshade::~DeadlyNightshade()

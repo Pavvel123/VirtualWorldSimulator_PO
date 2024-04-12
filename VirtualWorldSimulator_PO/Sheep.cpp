@@ -1,10 +1,12 @@
 #include "Sheep.h"
+#include "MyFunctions.h"
+#include <iostream>
 
-Sheep::Sheep(int strength, int initiative, int xPos, int yPos, World& world)
+Sheep::Sheep(int xPos, int yPos, World& world)
 	: Animal(world)
 {
-	Organism::strength = strength;
-	Organism::initiative = initiative;
+	Organism::strength = 4;
+	Organism::initiative = 4;
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
@@ -20,6 +22,9 @@ void Sheep::Collision(World& world)
 
 void Sheep::Print()
 {
+	Organism::Print();
+	SetTextColour(112);//207
+	std::cout << "SH";
 }
 
 Sheep::~Sheep()

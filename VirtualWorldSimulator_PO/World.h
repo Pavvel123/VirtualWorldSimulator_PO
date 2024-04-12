@@ -9,13 +9,16 @@ class Organism;
 class World
 {
 private:
-	vector<Organism*> organisms;
-	int width;
-	int height;
+	vector<Organism*>* organisms;
+	unsigned width;
+	unsigned height;
 
 public:
-	World(unsigned width, unsigned height, vector<Organism*> organisms);
-	World(unsigned width, unsigned height);
+	World(unsigned width, unsigned height, vector<Organism*>* organisms);
+	//World(unsigned width, unsigned height);
+	void AddOrganism(Organism* organism);
+	unsigned GetWidth() const;
+	unsigned GetHeight() const;
 	void MakeTurn();
 	void Print();
 	~World();

@@ -1,9 +1,11 @@
 #include "SosnowskysHogweed.h"
+#include "MyFunctions.h"
+#include <iostream>
 
-SosnowskysHogweed::SosnowskysHogweed(int strength, int xPos, int yPos, World& world)
+SosnowskysHogweed::SosnowskysHogweed(int xPos, int yPos, World& world)
 	: Plant(world)
 {
-	Organism::strength = strength;
+	Organism::strength = 10;
 	Organism::initiative = 0;
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
@@ -20,6 +22,9 @@ void SosnowskysHogweed::Collision(World& world)
 
 void SosnowskysHogweed::Print()
 {
+	Organism::Print();
+	SetTextColour(161);
+	std::cout << "SH";
 }
 
 SosnowskysHogweed::~SosnowskysHogweed()

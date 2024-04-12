@@ -1,16 +1,11 @@
 #include "Organism.h"
+#include "MyFunctions.h"
 
-/*
-Organism::Organism(int strength, int initiative, int xPos, int yPos, World& world)
-	: strength(strength), initiative(initiative), xPos(xPos), yPos(yPos), world(world)
+Organism::Organism(World& world) : strength(0), initiative(0), xPos(0), yPos(0), world(world)
 {
 }
 
-Organism::~Organism()
+void Organism::Print()
 {
-}
-*/
-
-Organism::Organism(World& world) : world(world)
-{
+	Gotoxy(2 * xPos - 1, yPos + 2);
 }
