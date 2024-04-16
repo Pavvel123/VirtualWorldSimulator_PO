@@ -5,8 +5,8 @@ class SosnowskysHogweed : public Plant
 {
 public:
 	SosnowskysHogweed(int xPos, int yPos, World& world);
-	void Action(World& world) override;
-	void Collision(World& world) override;
+	void Action() override;
+	void Collision() override;
 	void Print() override;
 	~SosnowskysHogweed();
 };

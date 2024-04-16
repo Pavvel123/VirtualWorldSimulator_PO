@@ -14,8 +14,10 @@ protected:
 
 public:
 	Organism(World& world);
-	virtual void Action(World& world) = 0;
-	virtual void Collision(World& world) = 0;
+	int GetXPos() const;
+	int GetYPos() const;
+	virtual void Action() = 0;
+	virtual void Collision() = 0;
 	virtual void Print();
 	//~Organism();
 };

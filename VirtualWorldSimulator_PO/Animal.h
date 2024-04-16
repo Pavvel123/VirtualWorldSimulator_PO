@@ -4,8 +4,8 @@ class Animal : public Organism
 {
 public:
 	Animal(World& world);
-	virtual void Action(World& world) override; // TODO podstawowa forma ruchu
-	virtual void Collision(World& world) override; // TODO rozmna¿anie
-	virtual void Print();
+	virtual void Action() override; // TODO podstawowa forma ruchu
+	virtual void Collision() override; // TODO rozmna¿anie
+	virtual void Print() override;
 	//~Animal();
 };

@@ -25,11 +25,48 @@ unsigned World::GetHeight() const
 	return height;
 }
 
-void World::MakeTurn()
+bool World::IsOrganismOnXY(int x, int y)
 {
 	for (Organism*& organism : *organisms)
 	{
-		//organism->Action();
+		if (organism->GetXPos() == x && organism->GetYPos() == y)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool World::HasOrganismColided(const Organism& organism)
+{
+	int organismsLength = organisms->size();
+	bool foundSelf = false;
+	int thisXPos = organism.GetXPos();
+	int thisYPos = organism.GetYPos();
+	for (int o = 0; o < organismsLength; o++)
+	{
+		//int testXPos = (*organisms)[o]->GetXPos();
+		//int testYPos = (*organisms)[o]->GetYPos();
+		if ((*organisms)[o]->GetXPos() == thisXPos && (*organisms)[o]->GetYPos() == thisYPos)
+		{
+			if (foundSelf) return true;
+			else foundSelf = true;
+		}
+	}
+	return false;
+}
+
+void World::MakeTurn()
+{
+	int organismsLength = organisms->size();
+	for (int i = 0; i < organismsLength; i++)
+	{
+		(*organisms)[i]->Action();
+		if (HasOrganismColided(*(*organisms)[i]))
+		{
+			(*organisms)[i]->Collision();
+		}
+		(*organisms)[i]->Print();
 	}
 }
 

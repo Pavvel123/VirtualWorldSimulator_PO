@@ -12,11 +12,12 @@ Tortoise::Tortoise(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Tortoise::Action(World& world)
+void Tortoise::Action()
 {
+	Animal::Action();
 }
 
-void Tortoise::Collision(World& world)
+void Tortoise::Collision()
 {
 }
 

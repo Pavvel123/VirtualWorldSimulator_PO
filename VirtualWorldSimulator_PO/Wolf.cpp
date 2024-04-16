@@ -12,11 +12,12 @@ Wolf::Wolf(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Wolf::Action(World& world)
+void Wolf::Action()
 {
+	Animal::Action();
 }
 
-void Wolf::Collision(World& world)
+void Wolf::Collision()
 {
 }
 

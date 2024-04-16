@@ -38,6 +38,8 @@ int main()
 	//TestColour();
 	///*
 	setlocale(LC_ALL, "en_US.UNICODE");
+	srand(time(NULL));
+	SetTextColour(15);
 	const char* name = "Pawel";
 	const char* surname = "Kurpiewski";
 	const char* studentsNumber = "198203";
@@ -48,7 +50,7 @@ int main()
 	World world(width, height, &organisms);
 	organisms.push_back(new Fox(5, 6, world));
 	organisms.push_back(new Wolf(11, 12, world));
-	organisms.push_back(new Human(1, 1, world));
+	organisms.push_back(new Human(10, 10, world));
 	organisms.push_back(new Antelope(3, 3, world));
 	organisms.push_back(new Sheep(7, 12, world));
 	organisms.push_back(new Tortoise(9, 2, world));
@@ -60,10 +62,11 @@ int main()
 	organisms.push_back(new SosnowskysHogweed(16, 17, world));
 	UserInterface ui(name, surname, studentsNumber, world);
 	ui.Print();
-	organisms.clear();
+	//organisms.clear();
 	while (true)
 	{
 		world.MakeTurn();
+		//_getch();
 	}
 	//*/
 	_getch();

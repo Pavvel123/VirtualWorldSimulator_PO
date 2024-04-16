@@ -19,6 +19,8 @@ public:
 	void AddOrganism(Organism* organism);
 	unsigned GetWidth() const;
 	unsigned GetHeight() const;
+	bool IsOrganismOnXY(int x, int y);
+	bool HasOrganismColided(const Organism& organism);
 	void MakeTurn();
 	void Print();
 	~World();

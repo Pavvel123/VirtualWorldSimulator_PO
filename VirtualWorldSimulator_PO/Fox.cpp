@@ -12,11 +12,12 @@ Fox::Fox(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Fox::Action(World& world)
+void Fox::Action()
 {
+	Animal::Action();
 }
 
-void Fox::Collision(World& world)
+void Fox::Collision()
 {
 }
 

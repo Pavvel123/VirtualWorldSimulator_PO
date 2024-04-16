@@ -12,11 +12,11 @@ DeadlyNightshade::DeadlyNightshade(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void DeadlyNightshade::Action(World& world)
+void DeadlyNightshade::Action()
 {
 }
 
-void DeadlyNightshade::Collision(World& world)
+void DeadlyNightshade::Collision()
 {
 }
 

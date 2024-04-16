@@ -12,11 +12,11 @@ Sonchus::Sonchus(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Sonchus::Action(World& world)
+void Sonchus::Action()
 {
 }
 
-void Sonchus::Collision(World& world)
+void Sonchus::Collision()
 {
 }
 

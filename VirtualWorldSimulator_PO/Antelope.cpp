@@ -12,11 +12,12 @@ Antelope::Antelope(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Antelope::Action(World& world)
+void Antelope::Action()
 {
+	Animal::Action();
 }
 
-void Antelope::Collision(World& world)
+void Antelope::Collision()
 {
 }
 

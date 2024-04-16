@@ -1,9 +1,10 @@
 #pragma once
 #include "Organism.h"
+
 class Plant : public Organism
 {
 public:
 	Plant(World& world);
-	void Action(World& world) override;
+	void Action() override;
 	//~Plant();
 };

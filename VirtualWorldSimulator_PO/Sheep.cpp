@@ -12,11 +12,12 @@ Sheep::Sheep(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Sheep::Action(World& world)
+void Sheep::Action()
 {
+	Animal::Action();
 }
 
-void Sheep::Collision(World& world)
+void Sheep::Collision()
 {
 }
 

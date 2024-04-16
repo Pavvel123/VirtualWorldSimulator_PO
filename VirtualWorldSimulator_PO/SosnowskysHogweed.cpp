@@ -12,11 +12,11 @@ SosnowskysHogweed::SosnowskysHogweed(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void SosnowskysHogweed::Action(World& world)
+void SosnowskysHogweed::Action()
 {
 }
 
-void SosnowskysHogweed::Collision(World& world)
+void SosnowskysHogweed::Collision()
 {
 }
 
