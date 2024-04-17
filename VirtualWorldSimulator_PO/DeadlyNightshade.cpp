@@ -14,6 +14,7 @@ DeadlyNightshade::DeadlyNightshade(int xPos, int yPos, World& world)
 
 void DeadlyNightshade::Action()
 {
+	Plant::Action();
 }
 
 void DeadlyNightshade::Collision()

@@ -14,6 +14,7 @@ Sonchus::Sonchus(int xPos, int yPos, World& world)
 
 void Sonchus::Action()
 {
+	Plant::Action();
 }
 
 void Sonchus::Collision()

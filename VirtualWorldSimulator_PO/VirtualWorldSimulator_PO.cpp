@@ -38,7 +38,7 @@ int main()
 	//TestColour();
 	///*
 	setlocale(LC_ALL, "en_US.UNICODE");
-	srand(time(NULL));
+	srand(time(nullptr));
 	SetTextColour(15);
 	const char* name = "Pawel";
 	const char* surname = "Kurpiewski";

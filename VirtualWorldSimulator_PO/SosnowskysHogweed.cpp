@@ -14,6 +14,7 @@ SosnowskysHogweed::SosnowskysHogweed(int xPos, int yPos, World& world)
 
 void SosnowskysHogweed::Action()
 {
+	Plant::Action();
 }
 
 void SosnowskysHogweed::Collision()
