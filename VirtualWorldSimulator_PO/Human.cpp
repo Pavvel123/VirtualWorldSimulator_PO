@@ -3,6 +3,9 @@
 #include "MyFunctions.h"
 #include <conio.h>
 
+using std::cout;
+using std::endl;
+
 Human::Human(int xPos, int yPos, World& world)
 	: Animal(world)
 {
@@ -13,29 +16,33 @@ Human::Human(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
+Human::Human(World& world)
+	: Animal(world)
+{
+	int pos[2]{};
+	world.RandomPos(pos);
+	Organism::strength = 5;
+	Organism::initiative = 4;
+	Organism::xPos = pos[0];
+	Organism::yPos = pos[1];
+	Organism::world = world;
+}
+
 void Human::Action()
 { // 49 - 57
 	// N - 224 72
 	// S - 224 80
 	// E - 224 77
 	// W - 224 75
+	SetTextColour(15);
+	cout << "Human is ";
 	int input = _getch();
 	while (input != 224)
 	{
 		input = _getch();
 	}
 	int input2 = _getch();
-	SetTextColour(8);//127
-	Gotoxy(2 * xPos - 1, yPos + 2);
-	if ((xPos % 2 == 0 && yPos % 2 == 1) || (xPos % 2 == 1 && yPos % 2 == 0))
-	{
-		std::cout << (char)176 << (char)176;
-	}
-	else
-	{
-		std::cout << "  ";
-	}
-
+	EreasePrint();
 	switch (input2)
 	{
 	case 72:
@@ -60,8 +67,22 @@ void Human::Action()
 
 }
 
-void Human::Collision()
+void Human::Collision(Organism* organism)
 {
+	//There is only one human on the map. Uncomment if more humans.
+	
+	//Animal::Collision(organism);
+	//if (!dynamic_cast<Human*>(organism))
+	//{
+		if (strength > organism->GetStrength())
+		{
+			organism->SetIsDead(true);
+		}
+		else
+		{
+			isDead = true;
+		}
+	//}
 }
 
 void Human::Print()
@@ -69,6 +90,11 @@ void Human::Print()
 	Organism::Print();
 	SetTextColour(148);//159
 	std::cout << "HU";
+}
+
+const char* Human::OrganismName() const
+{
+	return "Human";
 }
 
 Human::~Human()

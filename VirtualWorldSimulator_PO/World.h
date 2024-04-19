@@ -10,17 +10,25 @@ class World
 {
 private:
 	vector<Organism*>* organisms;
-	unsigned width;
-	unsigned height;
+	int animalsLength;
+	int plantsLength;
+	int width;
+	int height;
 
 public:
-	World(unsigned width, unsigned height, vector<Organism*>* organisms);
-	//World(unsigned width, unsigned height);
+	World(int width, int height, vector<Organism*>* organisms);
+	//World(int width, int height);
 	void AddOrganism(Organism* organism);
-	unsigned GetWidth() const;
-	unsigned GetHeight() const;
+	void DeleteOrganism(Organism* organism);
+	int GetAnimalsLength() const;
+	int GetPlantsLength() const;
+	int GetWidth() const;
+	int GetHeight() const;
+	vector<Organism*>* GetOrganisms() const;
+	void SetAnimalsLength(int value);
+	void SetPlantsLength(int value);
 	bool IsOrganismOnXY(int x, int y);
-	bool HasOrganismColided(const Organism& organism);
+	int* RandomPos(int* output);
 	void MakeTurn();
 	void Print();
 	~World();

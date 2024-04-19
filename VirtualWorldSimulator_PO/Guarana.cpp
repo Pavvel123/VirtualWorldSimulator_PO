@@ -25,13 +25,26 @@ Guarana::Guarana(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
+Guarana::Guarana(World& world)
+	: Plant(world)
+{
+	int pos[2]{};
+	world.RandomPos(pos);
+	Organism::strength = 0;
+	Organism::initiative = 0;
+	Organism::xPos = pos[0];
+	Organism::yPos = pos[1];
+	Organism::world = world;
+}
+
 void Guarana::Action()
 {
 	Plant::Action();
 }
 
-void Guarana::Collision()
+void Guarana::Collision(Organism* organism)
 {
+	organism->SetStrength(organism->GetStrength() + 3);
 }
 
 void Guarana::Print()
@@ -42,6 +55,12 @@ void Guarana::Print()
 	//std::cout << (char)177 << (char)177;
 }
 
+const char* Guarana::OrganismName() const
+{
+	return "Guarana";
+}
+
 Guarana::~Guarana()
 {
+	//Plant::~Plant();
 }

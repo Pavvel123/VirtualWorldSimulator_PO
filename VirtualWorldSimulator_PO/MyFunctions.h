@@ -1,3 +1,3 @@
 #pragma once
-void Gotoxy(unsigned x, unsigned y);
+void Gotoxy(short x, short y);
 void SetTextColour(int c);

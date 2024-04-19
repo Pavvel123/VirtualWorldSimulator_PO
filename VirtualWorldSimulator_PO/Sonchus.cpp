@@ -12,12 +12,27 @@ Sonchus::Sonchus(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Sonchus::Action()
+Sonchus::Sonchus(World& world)
+	: Plant(world)
 {
-	Plant::Action();
+	int pos[2]{};
+	world.RandomPos(pos);
+	Organism::strength = 0;
+	Organism::initiative = 0;
+	Organism::xPos = pos[0];
+	Organism::yPos = pos[1];
+	Organism::world = world;
 }
 
-void Sonchus::Collision()
+void Sonchus::Action()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		Plant::Action();
+	}
+}
+
+void Sonchus::Collision(Organism* organism)
 {
 }
 
@@ -28,6 +43,12 @@ void Sonchus::Print()
 	std::cout << "SN";
 }
 
+const char* Sonchus::OrganismName() const
+{
+	return "Sonchus";
+}
+
 Sonchus::~Sonchus()
 {
+	//Plant::~Plant();
 }

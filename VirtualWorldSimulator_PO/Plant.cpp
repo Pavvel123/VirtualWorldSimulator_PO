@@ -5,7 +5,7 @@
 #include "Sonchus.h"
 #include "SosnowskysHogweed.h"
 #include <iostream>
-#define SEEDING_PROBABILITY 50
+#define SEEDING_PROBABILITY 25
 
 enum Direction
 {
@@ -21,6 +21,7 @@ enum Direction
 
 Plant::Plant(World& world) : Organism(world)
 {
+	world.SetPlantsLength(world.GetPlantsLength() + 1);
 }
 
 // symulacja rozprzestrzeniania się rośliny w metodzie akcja() → z pewnym
@@ -117,8 +118,8 @@ void Plant::Action()
 		}
 	}
 }
-/*
+
 Plant::~Plant()
 {
+	world.SetPlantsLength(world.GetPlantsLength() - 1);
 }
-*/

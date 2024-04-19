@@ -2,86 +2,96 @@
 #include "MyFunctions.h"
 #include <iostream>
 
+#include "Antelope.h"
+#include "Fox.h"
+#include "Sheep.h"
+#include "Tortoise.h"
+#include "Wolf.h"
+
+using std::cout;
+using std::endl;
+
 enum Direction
 {
 	N,
-	//NE,
 	E,
-	//SE,
 	S,
-	//SW,
 	W,
-	//NW
 };
 
 Animal::Animal(World& world) : Organism(world)
 {
+	world.SetAnimalsLength(world.GetAnimalsLength() + 1);
 }
 
 void Animal::Action()
 {
-	SetTextColour(8);//127
-	//Gotoxy(2 * xPos - 1, yPos + 2);
-	Organism::Print();
-	if ((xPos % 2 == 0 && yPos % 2 == 1) || (xPos % 2 == 1 && yPos % 2 == 0))
-	{
-		std::cout << (char)176 << (char)176;
-	}
-	else
-	{
-		std::cout << "  ";
-	}
+	SetTextColour(15);//127
 
 	Direction direction = Direction(rand() % 4);
+	//cout << OrganismName() << " is going ";
 	switch (direction)
 	{
 	case N:
-		if (yPos == 1) yPos++;
-		else yPos--;
-		break;/*
-	case NE:
-		if (yPos == 1) yPos++;
-		else yPos--;
-		if (xPos == world.GetWidth()) xPos--;
-		else xPos++;
-		break;*/
+		if (yPos == 1)
+		{
+			yPos++;
+			//cout << "south ";
+		}
+		else
+		{
+			yPos--;
+			//cout << "north ";
+		}
+		break;
 	case E:
-		if (xPos == world.GetWidth()) xPos--;
-		else xPos++;
-		break;/*
-	case SE:
-		if (xPos == world.GetWidth()) xPos--;
-		else xPos++;
-		if (yPos == world.GetHeight()) yPos--;
-		else yPos++;
-		break;*/
+		if (xPos == world.GetWidth())
+		{
+			xPos--;
+			//cout << "west ";
+		}
+		else
+		{
+			xPos++;
+			//cout << "east ";
+		}
+		break;
 	case S:
-		if (yPos == world.GetHeight()) yPos--;
-		else yPos++;
-		break;/*
-	case SW:
-		if (yPos == world.GetHeight()) yPos--;
-		else yPos++;
-		if (xPos == 1) xPos++;
-		else xPos--;
-		break;*/
+		if (yPos == world.GetHeight())
+		{
+			yPos--;
+			//cout << "north ";
+		}
+		else
+		{
+			yPos++;
+			//cout << "south ";
+		}
+		break;
 	case W:
-		if (xPos == 1) xPos++;
-		else xPos--;
-		break;/*
-	case NW:
-		if (xPos == 1) xPos++;
-		else xPos--;
-		if (yPos == 1) yPos++;
-		else yPos--;
-		break;*/
-	default:
+		if (xPos == 1)
+		{
+			xPos++;
+			//cout << "east ";
+		}
+		else
+		{
+			xPos--;
+			//cout << "west ";
+		}
 		break;
 	}
+	//cout << "to (" << xPos << ", " << yPos << ").";
 }
 
-void Animal::Collision()
+void Animal::Collision(Organism* organism)
 {
+	if (age > 5 && organism->GetAge() > 5 && dynamic_cast<Antelope*>(this) && dynamic_cast<Antelope*>(organism))
+	{
+		world.AddOrganism(new Antelope(xPos + 1, yPos + 1, world));
+		xPos--;
+		yPos--;
+	}
 }
 
 void Animal::Print()
@@ -89,8 +99,7 @@ void Animal::Print()
 	//SetTextColour(207);//196
 }
 
-/*
 Animal::~Animal()
 {
+	world.SetAnimalsLength(world.GetAnimalsLength() - 1);
 }
-*/

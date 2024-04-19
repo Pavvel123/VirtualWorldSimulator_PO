@@ -1,7 +1,7 @@
 #include "MyFunctions.h"
 #include <Windows.h>
 
-void Gotoxy(unsigned x, unsigned y)
+void Gotoxy(short x, short y)
 {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);

@@ -12,13 +12,37 @@ Sheep::Sheep(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
+Sheep::Sheep(World& world)
+	: Animal(world)
+{
+	int pos[2]{};
+	world.RandomPos(pos);
+	Organism::strength = 4;
+	Organism::initiative = 4;
+	Organism::xPos = pos[0];
+	Organism::yPos = pos[1];
+	Organism::world = world;
+}
+
 void Sheep::Action()
 {
 	Animal::Action();
 }
 
-void Sheep::Collision()
+void Sheep::Collision(Organism* organism)
 {
+	Animal::Collision(organism);
+	if (!dynamic_cast<Sheep*>(organism))
+	{
+		if (strength > organism->GetStrength())
+		{
+			organism->SetIsDead(true);
+		}
+		else
+		{
+			isDead = true;
+		}
+	}
 }
 
 void Sheep::Print()
@@ -28,6 +52,12 @@ void Sheep::Print()
 	std::cout << "SH";
 }
 
+const char* Sheep::OrganismName() const
+{
+	return "Sheep";
+}
+
 Sheep::~Sheep()
 {
+	//Animal::~Animal();
 }

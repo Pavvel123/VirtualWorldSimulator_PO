@@ -6,5 +6,5 @@ class Plant : public Organism
 public:
 	Plant(World& world);
 	void Action() override;
-	//~Plant();
+	virtual ~Plant() override;
 };

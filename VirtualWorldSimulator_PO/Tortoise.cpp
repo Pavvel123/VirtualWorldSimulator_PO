@@ -1,6 +1,7 @@
 #include "Tortoise.h"
 #include "MyFunctions.h"
 #include <iostream>
+#define MOVE_PROBABILITY 25
 
 Tortoise::Tortoise(int xPos, int yPos, World& world)
 	: Animal(world)
@@ -12,13 +13,41 @@ Tortoise::Tortoise(int xPos, int yPos, World& world)
 	Organism::world = world;
 }
 
-void Tortoise::Action()
+Tortoise::Tortoise(World& world)
+	: Animal(world)
 {
-	Animal::Action();
+	int pos[2]{};
+	world.RandomPos(pos);
+	Organism::strength = 2;
+	Organism::initiative = 1;
+	Organism::xPos = pos[0];
+	Organism::yPos = pos[1];
+	Organism::world = world;
 }
 
-void Tortoise::Collision()
+void Tortoise::Action()
 {
+	bool willMove = rand() % 100 + 1 < MOVE_PROBABILITY;
+	if (willMove)
+	{
+		Animal::Action();
+	}
+}
+
+void Tortoise::Collision(Organism* organism)
+{
+	Animal::Collision(organism);
+	if (!dynamic_cast<Tortoise*>(organism))
+	{
+		if (strength > organism->GetStrength())
+		{
+			organism->SetIsDead(true);
+		}
+		else
+		{
+			isDead = true;
+		}
+	}
 }
 
 void Tortoise::Print()
@@ -28,6 +57,12 @@ void Tortoise::Print()
 	std::cout << "TT";
 }
 
+const char* Tortoise::OrganismName() const
+{
+	return "Tortoise";
+}
+
 Tortoise::~Tortoise()
 {
+	//Animal::~Animal();
 }
