@@ -40,59 +40,59 @@ void Antelope::Action()
 	SetTextColour(15);//127
 
 	Direction direction = Direction(rand() % 4);
-	cout << OrganismName() << " is going ";
+	//cout << OrganismName() << " is going ";
 	switch (direction)
 	{
 	case N:
 		if (yPos <= 2)
 		{
 			yPos += 2;
-			cout << "south ";
+			//cout << "south ";
 		}
 		else
 		{
 			yPos -= 2;
-			cout << "nort ";
+			//cout << "north ";
 		}
 		break;
 	case E:
 		if (xPos >= world.GetWidth() - 1)
 		{
 			xPos -= 2;
-			cout << "west ";
+			//cout << "west ";
 		}
 		else
 		{
 			xPos += 2;
-			cout << "east ";
+			//cout << "east ";
 		}
 		break;
 	case S:
 		if (yPos >= world.GetHeight() - 1)
 		{
 			yPos -= 2;
-			cout << "north ";
+			//cout << "north ";
 		}
 		else
 		{
 			yPos += 2;
-			cout << "south ";
+			//cout << "south ";
 		}
 		break;
 	case W:
 		if (xPos <= 2)
 		{
 			xPos += 2;
-			cout << "east ";
+			//cout << "east ";
 		}
 		else
 		{
 			xPos -= 2;
-			cout << "west ";
+			//cout << "west ";
 		}
 		break;
 	}
-	cout << "to (" << xPos << ", " << yPos << ").";
+	//cout << "to (" << xPos << ", " << yPos << ").";
 }
 
 void Antelope::Collision(Organism* organism)

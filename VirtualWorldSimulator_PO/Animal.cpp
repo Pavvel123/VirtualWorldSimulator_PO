@@ -86,18 +86,54 @@ void Animal::Action()
 
 void Animal::Collision(Organism* organism)
 {
-	if (age > 5 && organism->GetAge() > 5 && dynamic_cast<Antelope*>(this) && dynamic_cast<Antelope*>(organism))
+	if (OrganismName() == organism->OrganismName())
 	{
-		world.AddOrganism(new Antelope(xPos + 1, yPos + 1, world));
-		xPos--;
-		yPos--;
+		int newPos[2]{ xPos, yPos };
+		if (age > 5 && organism->GetAge() > 5)
+		{
+			NewPosIn8Neighbourhood(newPos);
+			if (dynamic_cast<Antelope*>(organism))
+			{
+				Antelope* newAntelope = new Antelope(newPos[0], newPos[1], world);
+				world.AddOrganism(newAntelope);
+				newAntelope->Print();
+			}
+			else if (dynamic_cast<Fox*>(organism))
+			{
+				Fox* newFox = new Fox(newPos[0], newPos[1], world);
+				world.AddOrganism(newFox);
+				newFox->Print();
+			}
+			else if (dynamic_cast<Sheep*>(organism))
+			{
+				Sheep* newSheep = new Sheep(newPos[0], newPos[1], world);
+				world.AddOrganism(newSheep);
+				newSheep->Print();
+			}
+			else if (dynamic_cast<Tortoise*>(organism))
+			{
+				Tortoise* newTortoise = new Tortoise(newPos[0], newPos[1], world);
+				world.AddOrganism(newTortoise);
+				newTortoise->Print();
+			}
+			else if (dynamic_cast<Wolf*>(organism))
+			{
+				Wolf* newWolf = new Wolf(newPos[0], newPos[1], world);
+				world.AddOrganism(newWolf);
+				newWolf->Print();
+			}
+		}
+		newPos[0] = xPos;
+		newPos[1] = yPos;
+		NewPosIn8Neighbourhood(newPos);
+		xPos = newPos[0];
+		yPos = newPos[1];
 	}
 }
-
+/*
 void Animal::Print()
 {
-	//SetTextColour(207);//196
-}
+}*/
 
 Animal::~Animal()
 {

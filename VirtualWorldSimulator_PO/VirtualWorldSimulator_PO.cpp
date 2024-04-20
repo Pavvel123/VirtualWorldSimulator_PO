@@ -40,16 +40,16 @@ int main()
 	World world(width, height, &organisms);
 
 	organisms.push_back(new Fox(world));
+	organisms.push_back(new Fox(world));
 	organisms.push_back(new Wolf(world));
-	//organisms.push_back(new Wolf(world));
-	//organisms.push_back(new Wolf(world));
-	//organisms.push_back(new Wolf(world));
-	//organisms.push_back(new Wolf(world));
+	organisms.push_back(new Wolf(world));
 
-	organisms.push_back(new Human(world));
 	organisms.push_back(new Antelope(world));
-	//organisms.push_back(new Antelope(world));
+	organisms.push_back(new Antelope(world));
+	organisms.push_back(new Human(world));
 	organisms.push_back(new Sheep(world));
+	organisms.push_back(new Sheep(world));
+	organisms.push_back(new Tortoise(world));
 	organisms.push_back(new Tortoise(world));
 	
 	organisms.push_back(new DeadlyNightshade(world));

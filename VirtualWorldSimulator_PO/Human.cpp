@@ -34,8 +34,8 @@ void Human::Action()
 	// S - 224 80
 	// E - 224 77
 	// W - 224 75
-	SetTextColour(15);
-	cout << "Human is ";
+	//SetTextColour(15);
+	//cout << "Human move. Click an arrow...";
 	int input = _getch();
 	while (input != 224)
 	{

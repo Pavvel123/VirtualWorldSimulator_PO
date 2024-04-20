@@ -33,6 +33,11 @@ int Organism::GetStrength() const
 	return strength;
 }
 
+int Organism::GetInitiative() const
+{
+	return initiative;
+}
+
 void Organism::SetAge(int age)
 {
 	this->age = age;
@@ -64,7 +69,7 @@ void Organism::EreasePrint()
 	if (!isDead)
 	{
 		Gotoxy(2 * xPos - 1, yPos + 2);
-		SetTextColour(128);//8
+		SetTextColour(8);//128
 		if ((xPos % 2 == 0 && yPos % 2 == 1) || (xPos % 2 == 1 && yPos % 2 == 0))
 		{
 			cout << (char)176 << (char)176;
@@ -106,6 +111,83 @@ Organism* Organism::CollidedWith()
 		}
 	}
 	return nullptr;
+}
+
+void Organism::NewPosIn8Neighbourhood(int* pos)
+{
+	enum Direction8
+	{
+		N,
+		NE,
+		E,
+		SE,
+		S,
+		SW,
+		W,
+		NW
+	}; 
+	
+	do
+	{
+		Direction8 direction8 = Direction8(rand() % 8);
+		switch (direction8)
+		{
+		case N:
+			if (yPos > 1 && !world.IsOrganismOnXY(xPos, yPos - 1))
+			{
+				pos[1]--;
+			}
+			break;
+		case NE:
+			if (xPos < world.GetWidth() && yPos > 1 && !world.IsOrganismOnXY(xPos + 1, yPos - 1))
+			{
+				pos[0]++;
+				pos[1]--;
+			}
+			break;
+		case E:
+			if (xPos < world.GetWidth() && !world.IsOrganismOnXY(xPos + 1, yPos))
+			{
+				pos[0]++;
+			}
+			break;
+		case SE:
+			if (xPos < world.GetWidth() && yPos < world.GetHeight() && !world.IsOrganismOnXY(xPos + 1, yPos + 1))
+			{
+				pos[0]++;
+				pos[1]++;
+			}
+			break;
+		case S:
+			if (yPos < world.GetHeight() && !world.IsOrganismOnXY(xPos, yPos + 1))
+			{
+				pos[1]++;
+			}
+			break;
+		case SW:
+			if (yPos < world.GetHeight() && xPos > 1 && !world.IsOrganismOnXY(xPos - 1, yPos + 1))
+			{
+				pos[0]--;
+				pos[1]++;
+			}
+			break;
+		case W:
+			if (xPos > 1 && !world.IsOrganismOnXY(xPos - 1, yPos))
+			{
+				pos[0]--;
+			}
+			break;
+		case NW:
+			if (xPos > 1 && yPos > 1 && !world.IsOrganismOnXY(xPos - 1, yPos - 1))
+			{
+				pos[0]--;
+				pos[1]--;
+			}
+			break;
+		default:
+			break;
+		}
+	} while (pos[0] == xPos && pos[1] == yPos);
 }
 
 Organism::~Organism()

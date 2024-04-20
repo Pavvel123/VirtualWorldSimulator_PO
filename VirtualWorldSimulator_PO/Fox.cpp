@@ -39,7 +39,7 @@ void Fox::Action()
 {
 	SetTextColour(15);//127
 
-	cout << "Fox is going ";
+	//cout << "Fox is going ";
 	int newX = xPos;
 	int newY = yPos;
 
@@ -54,7 +54,7 @@ void Fox::Action()
 				if (CanMove(xPos, yPos + 1))
 				{
 					newY++;
-					cout << "south ";
+					//cout << "south ";
 				}
 			}
 			else
@@ -62,7 +62,7 @@ void Fox::Action()
 				if (CanMove(xPos, yPos - 1))
 				{
 					newY--;
-					cout << "north ";
+					//cout << "north ";
 				}
 			}
 			break;
@@ -72,7 +72,7 @@ void Fox::Action()
 				if (CanMove(xPos - 1, yPos))
 				{
 					newX--;
-					cout << "west ";
+					//cout << "west ";
 				}
 			}
 			else
@@ -80,7 +80,7 @@ void Fox::Action()
 				if (CanMove(xPos + 1, yPos))
 				{
 					newX++;
-					cout << "east ";
+					//cout << "east ";
 				}
 			}
 			break;
@@ -90,7 +90,7 @@ void Fox::Action()
 				if (CanMove(xPos, yPos - 1))
 				{
 					newY--;
-					cout << "north ";
+					//cout << "north ";
 				}
 			}
 			else
@@ -98,7 +98,7 @@ void Fox::Action()
 				if (CanMove(xPos, yPos + 1))
 				{
 					newY++;
-					cout << "south ";
+					//cout << "south ";
 				}
 			}
 			break;
@@ -108,7 +108,7 @@ void Fox::Action()
 				if (CanMove(xPos + 1, yPos))
 				{
 					newX++;
-					cout << "east ";
+					//cout << "east ";
 				}
 			}
 			else
@@ -116,7 +116,7 @@ void Fox::Action()
 				if (CanMove(xPos - 1, yPos))
 				{
 					newX--;
-					cout << "west ";
+					//cout << "west ";
 				}
 			}
 			break;
@@ -124,7 +124,7 @@ void Fox::Action()
 	}
 	xPos = newX;
 	yPos = newY;
-	cout << "to (" << xPos << ", " << yPos << ").";
+	//cout << "to (" << xPos << ", " << yPos << ").";
 }
 
 void Fox::Collision(Organism* organism)

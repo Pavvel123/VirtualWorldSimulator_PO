@@ -22,6 +22,7 @@ public:
 	int GetAge() const;
 	bool GetIsDead() const;
 	int GetStrength() const;
+	int GetInitiative() const;
 
 	void SetAge(int age);
 	void SetIsDead(bool isDead);
@@ -35,5 +36,7 @@ public:
 	void EreasePrint();
 	Organism* CollidedWith();
 	virtual const char* OrganismName() const = 0;
+	void NewPosIn8Neighbourhood(int* pos);
+
 	virtual ~Organism();
 };

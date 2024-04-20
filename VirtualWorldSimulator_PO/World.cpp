@@ -4,6 +4,7 @@
 #include "MyFunctions.h"
 #include <conio.h>
 #include "Human.h"
+#include <algorithm>
 
 using std::cout;
 using std::endl;
@@ -80,6 +81,21 @@ int* World::RandomPos(int* output)
 	return output;
 }
 
+void World::SortOrganisms()
+{
+	std::sort(organisms->begin(), organisms->end(), [](const Organism * a, const Organism * b)
+	{
+			if (a->GetInitiative() != b->GetInitiative())
+			{
+				return a->GetInitiative() > b->GetInitiative();
+			}
+			else
+			{
+				return a->GetAge() > b->GetAge();
+			}
+	});
+}
+
 void World::MakeTurn()
 {
 	int organismsLength = animalsLength + plantsLength;
@@ -105,7 +121,10 @@ void World::MakeTurn()
 			if (organismColidedWith != nullptr)
 			{
 				(*organisms)[i]->Collision(organismColidedWith);
-				organismColidedWith->Collision((*organisms)[i]);
+				if ((*organisms)[i]->OrganismName() != organismColidedWith->OrganismName())
+				{
+					organismColidedWith->Collision((*organisms)[i]);
+				}
 			}
 			if (!(*organisms)[i]->GetIsDead())
 			{
@@ -119,27 +138,29 @@ void World::MakeTurn()
 			} while (input != 13);*/
 		}
 	}
-	Gotoxy(2 * width + 5, 3);// organismsLength + 3);
-	SetTextColour(160);
-	cout << "END OF TURN! Press enter to continue.";
+	//Gotoxy(2 * width + 5, 3);// organismsLength + 3);
+	//SetTextColour(160);
+	//cout << "END OF TURN! Press enter to continue.";
+	/*
 	int input;
 	do
 	{
 		input = _getch();
-	} while (input != 13);
+	} while (input != 13);*/
 
 	SetTextColour(15);
 	for (int i = 0; i < animalsLength + 1; i++)
 	{
-		Gotoxy(2 * width + 5, i + 3);
-		cout << "______________________________________________________________________";
+		//Gotoxy(2 * width + 5, i + 3);
+		//cout << "______________________________________________________________________";
 	}
+	SortOrganisms();
 }
 
 void World::Print()
 {
 	//Gotoxy(1, 3);
-	SetTextColour(128);//8
+	SetTextColour(8);//128
 	for (int h = 0; h < height; h++)
 	{
 		Gotoxy(1, h + 3);
