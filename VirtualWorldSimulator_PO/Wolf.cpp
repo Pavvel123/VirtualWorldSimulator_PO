@@ -2,6 +2,8 @@
 #include <iostream>
 #include "MyFunctions.h"
 
+using std::cout;
+
 Wolf::Wolf(int xPos, int yPos, World& world)
 	: Animal(world)
 {
@@ -10,6 +12,7 @@ Wolf::Wolf(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Wolf::Wolf(World& world)
@@ -22,6 +25,7 @@ Wolf::Wolf(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Wolf::Action()
@@ -34,13 +38,21 @@ void Wolf::Collision(Organism* organism)
 	Animal::Collision(organism);
 	if (!dynamic_cast<Wolf*>(organism))
 	{
-		if (strength > organism->GetStrength())
+		if (organism->IfDefendedTheAttack(this))
 		{
-			organism->SetIsDead(true);
+			xPos = prevXpos;
+			yPos = prevYpos;
 		}
 		else
 		{
-			isDead = true;
+			if (strength > organism->GetStrength())
+			{
+				organism->SetIsDead(true);
+			}
+			else
+			{
+				isDead = true;
+			}
 		}
 	}
 }
@@ -49,7 +61,7 @@ void Wolf::Print()
 {
 	Organism::Print();
 	SetTextColour(143);
-	std::cout << "WF";
+	cout << "WF";
 }
 
 const char* Wolf::OrganismName() const
@@ -59,5 +71,5 @@ const char* Wolf::OrganismName() const
 
 Wolf::~Wolf()
 {
-	//Animal::~Animal();
+	AddToLogDeath();
 }

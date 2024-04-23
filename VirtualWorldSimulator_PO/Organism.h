@@ -16,6 +16,7 @@ protected:
 
 public:
 	Organism(World& world);
+	void AddToLogBorn();
 
 	int GetXPos() const;
 	int GetYPos() const;
@@ -31,12 +32,14 @@ public:
 	virtual void Action() = 0;
 	virtual void Collision(Organism* organism) = 0;
 	virtual void Print();
-	virtual bool IfCounteredTheAtack(Organism* offensive);
+	virtual bool IfDefendedTheAttack(Organism* offensive);
 
 	void EreasePrint();
 	Organism* CollidedWith();
 	virtual const char* OrganismName() const = 0;
 	void NewPosIn8Neighbourhood(int* pos);
 
+
+	virtual void AddToLogDeath() = 0;
 	virtual ~Organism();
 };

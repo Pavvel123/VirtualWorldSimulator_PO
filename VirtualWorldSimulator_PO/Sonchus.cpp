@@ -2,6 +2,8 @@
 #include "MyFunctions.h"
 #include <iostream>
 
+using std::cout;
+
 Sonchus::Sonchus(int xPos, int yPos, World& world)
 	: Plant(world)
 {
@@ -10,6 +12,7 @@ Sonchus::Sonchus(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Sonchus::Sonchus(World& world)
@@ -22,6 +25,7 @@ Sonchus::Sonchus(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Sonchus::Action()
@@ -40,7 +44,7 @@ void Sonchus::Print()
 {
 	Organism::Print();
 	SetTextColour(174);
-	std::cout << "SN";
+	cout << "SN";
 }
 
 const char* Sonchus::OrganismName() const
@@ -50,5 +54,5 @@ const char* Sonchus::OrganismName() const
 
 Sonchus::~Sonchus()
 {
-	//Plant::~Plant();
+	AddToLogDeath();
 }

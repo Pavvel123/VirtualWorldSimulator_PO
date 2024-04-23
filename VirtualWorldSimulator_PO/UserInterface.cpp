@@ -15,7 +15,7 @@ void UserInterface::Print() const
 	int width = world.GetWidth();
 	int height = world.GetHeight();
 
-	cout << name << " " << surname << ", " << studentsNumber << "\n\n";
+	cout << name << " " << surname << ", " << studentsNumber;
 
 	Gotoxy(0, 2);
 

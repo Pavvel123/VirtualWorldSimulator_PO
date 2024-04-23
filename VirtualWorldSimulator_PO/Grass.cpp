@@ -1,19 +1,8 @@
 #include "Grass.h"
 #include "MyFunctions.h"
 #include <iostream>
-#define SEEDING_PROBABILITY 50
 
-enum Direction
-{
-	N,
-	NE,
-	E,
-	SE,
-	S,
-	SW,
-	W,
-	NW
-};
+using std::cout;
 
 Grass::Grass(int xPos, int yPos, World& world)
 	: Plant(world)
@@ -23,6 +12,7 @@ Grass::Grass(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Grass::Grass(World& world)
@@ -35,6 +25,7 @@ Grass::Grass(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Grass::Action()
@@ -50,7 +41,7 @@ void Grass::Print()
 {
 	Organism::Print();
 	SetTextColour(160);//10
-	std::cout << (char)177 << (char)177;
+	cout << (char)177 << (char)177;
 }
 
 const char* Grass::OrganismName() const
@@ -60,5 +51,5 @@ const char* Grass::OrganismName() const
 
 Grass::~Grass()
 {
-	//Plant::~Plant();
+	AddToLogDeath();
 }

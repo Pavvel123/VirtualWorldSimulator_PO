@@ -1,17 +1,10 @@
 #include "Antelope.h"
 #include "MyFunctions.h"
 #include <iostream>
+#define GETAWAY_PROBABILITY 50
 
 using std::cout;
 using std::endl;
-
-enum Direction
-{
-	N,
-	E,
-	S,
-	W,
-};
 
 Antelope::Antelope(int xPos, int yPos, World& world)
 	: Animal(world)
@@ -21,6 +14,7 @@ Antelope::Antelope(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Antelope::Antelope(World& world)
@@ -33,66 +27,51 @@ Antelope::Antelope(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Antelope::Action()
 {
-	SetTextColour(15);//127
-
-	Direction direction = Direction(rand() % 4);
-	//cout << OrganismName() << " is going ";
-	switch (direction)
+	enum Direction
 	{
-	case N:
-		if (yPos <= 2)
-		{
-			yPos += 2;
-			//cout << "south ";
-		}
-		else
-		{
-			yPos -= 2;
-			//cout << "north ";
-		}
-		break;
-	case E:
-		if (xPos >= world.GetWidth() - 1)
-		{
-			xPos -= 2;
-			//cout << "west ";
-		}
-		else
-		{
-			xPos += 2;
-			//cout << "east ";
-		}
-		break;
-	case S:
-		if (yPos >= world.GetHeight() - 1)
-		{
-			yPos -= 2;
-			//cout << "north ";
-		}
-		else
-		{
-			yPos += 2;
-			//cout << "south ";
-		}
-		break;
-	case W:
-		if (xPos <= 2)
-		{
-			xPos += 2;
-			//cout << "east ";
-		}
-		else
-		{
-			xPos -= 2;
-			//cout << "west ";
-		}
-		break;
+		N,
+		E,
+		S,
+		W,
+	};
+
+	SetTextColour(15);
+	prevXpos = xPos;
+	prevYpos = yPos;
+	Direction direction = Direction(rand() % 4);
+	world.logs += "~~> Antelope is running ";
+
+	if (direction == N && yPos > 2 || direction == S && yPos >= world.GetHeight() - 1)
+	{
+		yPos -= 2;
+		world.logs += "north ";
 	}
-	//cout << "to (" << xPos << ", " << yPos << ").";
+	else if (direction == E && xPos < world.GetWidth() - 1 || direction == W && xPos <= 2)
+	{
+		xPos += 2;
+		world.logs += "east ";
+	}
+	else if (direction == S && yPos < world.GetHeight() - 1 || direction == N && yPos <= 2)
+	{
+		yPos += 2;
+		world.logs += "south ";
+	}
+	else// if (direction == W && xPos > 2 || direction == E && xPos >= world.GetWidth() - 1)
+	{
+		xPos -= 2;
+		world.logs += "west ";
+	}
+
+	world.logs += "to (";
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ").\n";
 }
 
 void Antelope::Collision(Organism* organism)
@@ -100,13 +79,33 @@ void Antelope::Collision(Organism* organism)
 	Animal::Collision(organism);
 	if (!dynamic_cast<Antelope*>(organism))
 	{
-		if (strength > organism->GetStrength())
+		if (rand() % 100 < GETAWAY_PROBABILITY)
 		{
-			organism->SetIsDead(true);
+			isDead = false;
+			int newPos[2]{xPos, yPos};
+			NewPosIn8Neighbourhood(newPos);
+			xPos = newPos[0];
+			yPos = newPos[1];
 		}
 		else
 		{
-			isDead = true;
+			if (organism->IfDefendedTheAttack(this))
+			{
+				xPos = prevXpos;
+				yPos = prevYpos;
+				isDead = false;
+			}
+			else
+			{
+				if (strength > organism->GetStrength())
+				{
+					organism->SetIsDead(true);
+				}
+				else
+				{
+					isDead = true;
+				}
+			}
 		}
 	}
 }
@@ -115,7 +114,7 @@ void Antelope::Print()
 {
 	Organism::Print();
 	SetTextColour(176);
-	std::cout << "AN";
+	cout << "AN";
 }
 
 const char* Antelope::OrganismName() const
@@ -125,5 +124,5 @@ const char* Antelope::OrganismName() const
 
 Antelope::~Antelope()
 {
-	//Animal::~Animal();
+	AddToLogDeath();
 }

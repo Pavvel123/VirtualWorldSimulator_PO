@@ -2,6 +2,8 @@
 #include "MyFunctions.h"
 #include <iostream>
 
+using std::cout;
+
 Sheep::Sheep(int xPos, int yPos, World& world)
 	: Animal(world)
 {
@@ -10,6 +12,7 @@ Sheep::Sheep(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Sheep::Sheep(World& world)
@@ -22,6 +25,7 @@ Sheep::Sheep(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Sheep::Action()
@@ -34,13 +38,22 @@ void Sheep::Collision(Organism* organism)
 	Animal::Collision(organism);
 	if (!dynamic_cast<Sheep*>(organism))
 	{
-		if (strength > organism->GetStrength())
+		if (organism->IfDefendedTheAttack(this))
 		{
-			organism->SetIsDead(true);
+			xPos = prevXpos;
+			yPos = prevYpos;
+			isDead = false;
 		}
 		else
 		{
-			isDead = true;
+			if (strength > organism->GetStrength())
+			{
+				organism->SetIsDead(true);
+			}
+			else
+			{
+				isDead = true;
+			}
 		}
 	}
 }
@@ -49,7 +62,7 @@ void Sheep::Print()
 {
 	Organism::Print();
 	SetTextColour(112);//207
-	std::cout << "SH";
+	cout << "SH";
 }
 
 const char* Sheep::OrganismName() const
@@ -59,5 +72,5 @@ const char* Sheep::OrganismName() const
 
 Sheep::~Sheep()
 {
-	//Animal::~Animal();
+	AddToLogDeath();
 }

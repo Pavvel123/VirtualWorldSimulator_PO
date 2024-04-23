@@ -1,6 +1,8 @@
-#include "Animal.h"
+﻿#include "Animal.h"
 #include "MyFunctions.h"
 #include <iostream>
+#include <string>
+#include "NoMoreSpaceAvailableException.h"
 
 #include "Antelope.h"
 #include "Fox.h"
@@ -10,78 +12,57 @@
 
 using std::cout;
 using std::endl;
+using std::string;
 
-enum Direction
-{
-	N,
-	E,
-	S,
-	W,
-};
-
-Animal::Animal(World& world) : Organism(world)
+Animal::Animal(World& world) : Organism(world), prevXpos(0), prevYpos(0)
 {
 	world.SetAnimalsLength(world.GetAnimalsLength() + 1);
 }
 
 void Animal::Action()
 {
-	SetTextColour(15);//127
-
-	Direction direction = Direction(rand() % 4);
-	//cout << OrganismName() << " is going ";
-	switch (direction)
+	enum Direction
 	{
-	case N:
-		if (yPos == 1)
-		{
-			yPos++;
-			//cout << "south ";
-		}
-		else
-		{
-			yPos--;
-			//cout << "north ";
-		}
-		break;
-	case E:
-		if (xPos == world.GetWidth())
-		{
-			xPos--;
-			//cout << "west ";
-		}
-		else
-		{
-			xPos++;
-			//cout << "east ";
-		}
-		break;
-	case S:
-		if (yPos == world.GetHeight())
-		{
-			yPos--;
-			//cout << "north ";
-		}
-		else
-		{
-			yPos++;
-			//cout << "south ";
-		}
-		break;
-	case W:
-		if (xPos == 1)
-		{
-			xPos++;
-			//cout << "east ";
-		}
-		else
-		{
-			xPos--;
-			//cout << "west ";
-		}
-		break;
+		N,
+		E,
+		S,
+		W,
+	};
+
+	SetTextColour(15);
+	prevXpos = xPos;
+	prevYpos = yPos;
+	Direction direction = Direction(rand() % 4);
+	world.logs += "~>  ";
+	world.logs += OrganismName();
+	world.logs += " is going ";
+
+	if (direction == N && yPos != 1 || direction == S && yPos == world.GetHeight())
+	{
+		yPos--;
+		world.logs += "north ";
 	}
-	//cout << "to (" << xPos << ", " << yPos << ").";
+	else if (direction == E && xPos != world.GetWidth() || direction == W && xPos == 1)
+	{
+		xPos++;
+		world.logs += "east ";
+	}
+	else if (direction == S && yPos != world.GetHeight() || direction == N && yPos == 1)
+	{
+		yPos++;
+		world.logs += "south ";
+	}
+	else //if (direction == W && xPos != 1 || direction == E && xPos == world.GetWidth())
+	{
+		xPos--;
+		world.logs += "west ";
+	}
+
+	world.logs += "to (";
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ").\n";
 }
 
 void Animal::Collision(Organism* organism)
@@ -125,15 +106,29 @@ void Animal::Collision(Organism* organism)
 		}
 		newPos[0] = xPos;
 		newPos[1] = yPos;
-		NewPosIn8Neighbourhood(newPos);
-		xPos = newPos[0];
-		yPos = newPos[1];
+		try
+		{
+			NewPosIn8Neighbourhood(newPos);
+			xPos = newPos[0];
+			yPos = newPos[1];
+		}
+		catch (const NoMoreSpaceAvailableException& e)
+		{
+			isDead = true;
+		}
 	}
 }
-/*
-void Animal::Print()
+
+void Animal::AddToLogDeath()
 {
-}*/
+	world.logs += " +  ";
+	world.logs += OrganismName();
+	world.logs += " from (";
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ") has been killed.\n";
+}
 
 Animal::~Animal()
 {

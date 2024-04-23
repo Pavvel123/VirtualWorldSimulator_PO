@@ -1,19 +1,8 @@
 #include "Guarana.h"
 #include "MyFunctions.h"
 #include <iostream>
-#define SEEDING_PROBABILITY 50
 
-enum Direction
-{
-	N,
-	NE,
-	E,
-	SE,
-	S,
-	SW,
-	W,
-	NW
-};
+using std::cout;
 
 Guarana::Guarana(int xPos, int yPos, World& world)
 	: Plant(world)
@@ -23,6 +12,7 @@ Guarana::Guarana(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Guarana::Guarana(World& world)
@@ -35,6 +25,7 @@ Guarana::Guarana(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Guarana::Action()
@@ -45,14 +36,23 @@ void Guarana::Action()
 void Guarana::Collision(Organism* organism)
 {
 	organism->SetStrength(organism->GetStrength() + 3);
+
+	world.logs += " ^  Guarana from (";
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ") has increased ";
+	world.logs += organism->OrganismName();
+	world.logs += "'s strength to ";
+	world.logs += std::to_string(organism->GetStrength());
+	world.logs += ".\n";
 }
 
 void Guarana::Print()
 {
 	Organism::Print();
 	SetTextColour(164);
-	std::cout << "GU";
-	//std::cout << (char)177 << (char)177;
+	cout << "GU";
 }
 
 const char* Guarana::OrganismName() const
@@ -62,5 +62,5 @@ const char* Guarana::OrganismName() const
 
 Guarana::~Guarana()
 {
-	//Plant::~Plant();
+	AddToLogDeath();
 }

@@ -5,32 +5,28 @@
 #include "Sonchus.h"
 #include "SosnowskysHogweed.h"
 #include <iostream>
-#define SEEDING_PROBABILITY 25
-
-enum Direction
-{
-	N,
-	NE,
-	E,
-	SE,
-	S,
-	SW,
-	W,
-	NW
-};
+#define SEEDING_PROBABILITY 15
 
 Plant::Plant(World& world) : Organism(world)
 {
 	world.SetPlantsLength(world.GetPlantsLength() + 1);
 }
 
-// symulacja rozprzestrzeniania się rośliny w metodzie akcja() → z pewnym
-// prawdopodobieństwem każda z roślin może „zasiać” nową roślinę tego samego gatunku na
-// losowym, sąsiednim polu.
 void Plant::Action()
 {
-	bool willSeed = rand() % 100 + 1 < SEEDING_PROBABILITY;
-	if (willSeed)
+	enum Direction
+	{
+		N,
+		NE,
+		E,
+		SE,
+		S,
+		SW,
+		W,
+		NW
+	};
+
+	if (rand() % 100 < SEEDING_PROBABILITY)
 	{
 		Direction direction = Direction(rand() % 8);
 		int newX = xPos;
@@ -89,8 +85,6 @@ void Plant::Action()
 				newY--;
 			}
 			break;
-		default:
-			break;
 		}
 
 		if (newX != xPos || newY != yPos)
@@ -117,6 +111,17 @@ void Plant::Action()
 			}
 		}
 	}
+}
+
+void Plant::AddToLogDeath()
+{
+	world.logs += " -  ";
+	world.logs += OrganismName();
+	world.logs += " from (";
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ") has been eaten.\n";
 }
 
 Plant::~Plant()

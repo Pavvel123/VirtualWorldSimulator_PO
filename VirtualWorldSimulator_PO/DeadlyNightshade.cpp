@@ -10,6 +10,7 @@ DeadlyNightshade::DeadlyNightshade(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 DeadlyNightshade::DeadlyNightshade(World& world)
@@ -22,6 +23,7 @@ DeadlyNightshade::DeadlyNightshade(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void DeadlyNightshade::Action()
@@ -31,6 +33,7 @@ void DeadlyNightshade::Action()
 
 void DeadlyNightshade::Collision(Organism* organism)
 {
+	organism->SetIsDead(true);
 }
 
 void DeadlyNightshade::Print()
@@ -42,10 +45,10 @@ void DeadlyNightshade::Print()
 
 const char* DeadlyNightshade::OrganismName() const
 {
-	return "DeadlyNightshade";
+	return "Deadly Nightshade";
 }
 
 DeadlyNightshade::~DeadlyNightshade()
 {
-	//Plant::~Plant();
+	AddToLogDeath();
 }

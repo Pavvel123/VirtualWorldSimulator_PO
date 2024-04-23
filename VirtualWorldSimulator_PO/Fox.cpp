@@ -1,17 +1,10 @@
 #include "Fox.h"
 #include "MyFunctions.h"
 #include <iostream>
+#include "NoMoreSpaceAvailableException.h"
 
 using std::cout;
 using std::endl;
-
-enum Direction
-{
-	N,
-	E,
-	S,
-	W,
-};
 
 Fox::Fox(int xPos, int yPos, World& world)
 	: Animal(world)
@@ -21,6 +14,7 @@ Fox::Fox(int xPos, int yPos, World& world)
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Fox::Fox(World& world)
@@ -33,98 +27,134 @@ Fox::Fox(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 void Fox::Action()
 {
-	SetTextColour(15);//127
+	enum Direction
+	{
+		N,
+		E,
+		S,
+		W,
+	};
 
-	//cout << "Fox is going ";
+	SetTextColour(15);//127
 	int newX = xPos;
 	int newY = yPos;
+
+	bool possibleN = true;
+	bool possibleE = true;
+	bool possibleS = true;
+	bool possibleW = true;
 
 	while (newX == xPos && newY == yPos)
 	{
 		Direction direction = Direction(rand() % 4);
-		switch (direction)
+		if (direction == N && yPos != 1 || direction == S && yPos == world.GetHeight())
 		{
-		case N:
-			if (yPos == 1)
+			if (direction == S)
 			{
-				if (CanMove(xPos, yPos + 1))
-				{
-					newY++;
-					//cout << "south ";
-				}
+				possibleS = false;
 			}
-			else
+			if (possibleN && CanMove(xPos, yPos - 1))
 			{
-				if (CanMove(xPos, yPos - 1))
-				{
-					newY--;
-					//cout << "north ";
-				}
+				newY--;
+				world.logs += "~>  Fox is going north to (";
 			}
-			break;
-		case E:
-			if (xPos == world.GetWidth())
+			else if (possibleN)
 			{
-				if (CanMove(xPos - 1, yPos))
-				{
-					newX--;
-					//cout << "west ";
-				}
+				possibleN = false;
+				world.logs += " !  There is organism on north (";
+				world.logs += std::to_string(xPos);
+				world.logs += ", ";
+				world.logs += std::to_string(yPos - 1);
+				world.logs += ") stronger than Fox. Won't go there.\n";
 			}
-			else
+		}
+		else if (direction == E && xPos != world.GetWidth() || direction == W && xPos == 1)
+		{
+			if (direction == W)
 			{
-				if (CanMove(xPos + 1, yPos))
-				{
-					newX++;
-					//cout << "east ";
-				}
+				possibleW = false;
 			}
-			break;
-		case S:
-			if (yPos == world.GetHeight())
+			if (possibleE && CanMove(xPos + 1, yPos))
 			{
-				if (CanMove(xPos, yPos - 1))
-				{
-					newY--;
-					//cout << "north ";
-				}
+				newX++;
+				world.logs += "~>  Fox is going east to (";
 			}
-			else
+			else if (possibleE)
 			{
-				if (CanMove(xPos, yPos + 1))
-				{
-					newY++;
-					//cout << "south ";
-				}
+				possibleE = false;
+				world.logs += " !  There is organism on east (";
+				world.logs += std::to_string(xPos + 1);
+				world.logs += ", ";
+				world.logs += std::to_string(yPos);
+				world.logs += ") stronger than Fox. Won't go there.\n";
 			}
-			break;
-		case W:
-			if (xPos == 1)
+		}
+		else if (direction == S && yPos != world.GetHeight() || direction == N && yPos == 1)
+		{
+			if (direction == N)
 			{
-				if (CanMove(xPos + 1, yPos))
-				{
-					newX++;
-					//cout << "east ";
-				}
+				possibleN = false;
 			}
-			else
+			if (possibleS && CanMove(xPos, yPos + 1))
 			{
-				if (CanMove(xPos - 1, yPos))
-				{
-					newX--;
-					//cout << "west ";
-				}
+				newY++;
+				world.logs += "~>  Fox is going south to (";
 			}
-			break;
+			else if (possibleS)
+			{
+				possibleS = false;
+				world.logs += " !  There is organism on south (";
+				world.logs += std::to_string(xPos);
+				world.logs += ", ";
+				world.logs += std::to_string(yPos + 1);
+				world.logs += ") stronger than Fox. Won't go there.\n";
+			}
+		}
+		else// if (direction == W && xPos != 1 || direction == E && xPos == world.GetWidth())
+		{
+			if (direction == E)
+			{
+				possibleE = false;
+			}
+			if (possibleW && CanMove(xPos - 1, yPos))
+			{
+				newX--;
+				world.logs += "~>  Fox is going west to (";
+			}
+			else if (possibleW)
+			{
+				possibleW = false;
+				world.logs += " !  There is organism on west (";
+				world.logs += std::to_string(xPos - 1);
+				world.logs += ", ";
+				world.logs += std::to_string(yPos);
+				world.logs += ") stronger than Fox. Won't go there.\n";
+			}
+		}
+
+		if (!(possibleN || possibleE || possibleS || possibleW))
+		{
+			world.logs += "!!  No more space for Fox on (";
+			world.logs += std::to_string(xPos);
+			world.logs += ", ";
+			world.logs += std::to_string(yPos);
+			world.logs += ")!\n";
+			throw NoMoreSpaceAvailableException();
 		}
 	}
+	prevXpos = xPos;
+	prevYpos = yPos;
 	xPos = newX;
 	yPos = newY;
-	//cout << "to (" << xPos << ", " << yPos << ").";
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ").\n";
 }
 
 void Fox::Collision(Organism* organism)
@@ -132,13 +162,22 @@ void Fox::Collision(Organism* organism)
 	Animal::Collision(organism);
 	if (!dynamic_cast<Fox*>(organism))
 	{
-		if (strength > organism->GetStrength())
+		if (organism->IfDefendedTheAttack(this))
 		{
-			organism->SetIsDead(true);
+			xPos = prevXpos;
+			yPos = prevYpos;
+			isDead = false;
 		}
 		else
 		{
-			isDead = true;
+			if (strength > organism->GetStrength())
+			{
+				organism->SetIsDead(true);
+			}
+			else
+			{
+				isDead = true;
+			}
 		}
 	}
 }
@@ -169,5 +208,5 @@ const char* Fox::OrganismName() const
 
 Fox::~Fox()
 {
-	//Animal::~Animal();
+	AddToLogDeath();
 }

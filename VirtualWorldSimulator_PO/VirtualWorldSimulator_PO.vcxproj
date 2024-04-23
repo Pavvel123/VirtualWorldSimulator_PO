@@ -135,6 +135,7 @@
     <ClCompile Include="Guarana.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="MyFunctions.cpp" />
+    <ClCompile Include="NoMoreSpaceAvailableException.cpp" />
     <ClCompile Include="Organism.cpp" />
     <ClCompile Include="Plant.cpp" />
     <ClCompile Include="Sheep.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Guarana.h" />
     <ClInclude Include="Human.h" />
     <ClInclude Include="MyFunctions.h" />
+    <ClInclude Include="NoMoreSpaceAvailableException.h" />
     <ClInclude Include="Organism.h" />
     <ClInclude Include="Plant.h" />
     <ClInclude Include="Sheep.h" />

@@ -2,22 +2,25 @@
 #include <iostream>
 #include "MyFunctions.h"
 #include <conio.h>
+#include <fstream>
 
 using std::cout;
 using std::endl;
+using std::fstream;
 
 Human::Human(int xPos, int yPos, World& world)
-	: Animal(world)
+	: Animal(world), activeAlzursShield(false), timeoutAlzursShield(0)
 {
 	Organism::strength = 5;
 	Organism::initiative = 4;
 	Organism::xPos = xPos;
 	Organism::yPos = yPos;
 	Organism::world = world;
+	Organism::AddToLogBorn();
 }
 
 Human::Human(World& world)
-	: Animal(world)
+	: Animal(world), activeAlzursShield(false), timeoutAlzursShield(0)
 {
 	int pos[2]{};
 	world.RandomPos(pos);
@@ -26,6 +29,72 @@ Human::Human(World& world)
 	Organism::xPos = pos[0];
 	Organism::yPos = pos[1];
 	Organism::world = world;
+	Organism::AddToLogBorn();
+}
+
+bool Human::IfDefendedTheAttack(Organism* offensive)
+{
+	if (activeAlzursShield && dynamic_cast<Animal*>(offensive))
+	{
+		return true;
+		world.logs += " !  Human from (";
+		world.logs += std::to_string(xPos);
+		world.logs += ", ";
+		world.logs += std::to_string(yPos);
+		world.logs += ") thanks to the Alzur's Shield has defended the";
+		world.logs += offensive->OrganismName();
+		world.logs += "'s attack!\n";
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Human::AlzursShieldAction()
+{
+	if (timeoutAlzursShield > 0)
+	{
+		timeoutAlzursShield--;
+	}
+
+	if (timeoutAlzursShield == 0 && activeAlzursShield)
+	{
+		activeAlzursShield = false;
+		timeoutAlzursShield = 5;
+		world.logs += " =! Alzur's Shield deactivated.\n";
+	}
+}
+
+void Human::AlzursShieldActivation()
+{
+	if (!activeAlzursShield && timeoutAlzursShield == 0)
+	{
+		activeAlzursShield = true;
+		timeoutAlzursShield = 6;
+		Print();
+		Gotoxy(2 * world.GetWidth() + 3, 4);
+		SetTextColour(96);
+		cout << "== Alzur's Shield activated ==";
+		SetTextColour(15);
+		world.logs += " == Alzur's Shield activated ==\n";
+	}
+	else if (activeAlzursShield)
+	{
+		// Alzur's Shield is active; can not be activated now.
+		Gotoxy(2 * world.GetWidth() + 3, 4);
+		SetTextColour(15);
+		cout << "Alzur's Shield is active; can not be activated now.";
+		world.logs += " =! Alzur's Shield is active; can not be activated now.\n";
+	}
+	else
+	{
+		// Timeout for Alzur's Shield have not passed yet.
+		Gotoxy(2 * world.GetWidth() + 3, 4);
+		SetTextColour(15);
+		cout << "Timeout for Alzur's Shield have not passed yet!";
+		world.logs += " =! Timeout for Alzur's Shield have not passed yet!\n";
+	}
 }
 
 void Human::Action()
@@ -34,37 +103,71 @@ void Human::Action()
 	// S - 224 80
 	// E - 224 77
 	// W - 224 75
-	//SetTextColour(15);
-	//cout << "Human move. Click an arrow...";
-	int input = _getch();
-	while (input != 224)
+	Gotoxy(2 * world.GetWidth() + 3, 3);
+	SetTextColour(15);
+	cout << "Human move. Click an arrow...";
+	prevXpos = xPos;
+	prevYpos = yPos;
+	int xPosTemp = xPos;
+	int yPosTemp = yPos;
+	while (xPosTemp == prevXpos && yPosTemp == prevYpos)
 	{
-		input = _getch();
+		int input = _getch();
+		while (input != 224)
+		{
+			if (input == 'n')
+			{
+				AlzursShieldActivation();
+			}
+			if (input == 's')
+			{
+				fstream file("SAVE.txt", std::ios::out);
+				world.SaveToFile(&file);
+			}
+			input = _getch();
+		}
+		int input2 = _getch();
+		switch (input2)
+		{
+		case 72:
+			if (yPos != 1)
+			{
+				yPosTemp--;
+				world.logs += "->  Human is going north to (";
+			}
+			break;
+		case 77:
+			if (xPos != world.GetWidth())
+			{
+				xPosTemp++;
+				world.logs += "->  Human is going east to (";
+			}
+			break;
+		case 80:
+			if (yPos != world.GetHeight())
+			{
+				yPosTemp++;
+				world.logs += "->  Human is going south to (";
+			}
+			break;
+		case 75:
+			if (xPos != 1)
+			{
+				xPosTemp--;
+				world.logs += "->  Human is going west to (";
+			}
+			break;
+		default:
+			break;
+		}
 	}
-	int input2 = _getch();
 	EreasePrint();
-	switch (input2)
-	{
-	case 72:
-		if (yPos == 1) yPos++;
-		else yPos--;
-		break;
-	case 77:
-		if (xPos == world.GetWidth()) xPos--;
-		else xPos++;
-		break;
-	case 80:
-		if (yPos == world.GetHeight()) yPos--;
-		else yPos++;
-		break;
-	case 75:
-		if (xPos == 1) xPos++;
-		else xPos--;
-		break;
-	default:
-		break;
-	}
-
+	xPos = xPosTemp;
+	yPos = yPosTemp;
+	world.logs += std::to_string(xPos);
+	world.logs += ", ";
+	world.logs += std::to_string(yPos);
+	world.logs += ").\n";
 }
 
 void Human::Collision(Organism* organism)
@@ -74,22 +177,39 @@ void Human::Collision(Organism* organism)
 	//Animal::Collision(organism);
 	//if (!dynamic_cast<Human*>(organism))
 	//{
-		if (strength > organism->GetStrength())
+		if (organism->IfDefendedTheAttack(this))
 		{
-			organism->SetIsDead(true);
+			xPos = prevXpos;
+			yPos = prevYpos;
+			isDead = false;
 		}
 		else
 		{
-			isDead = true;
+			if (strength > organism->GetStrength())
+			{
+				organism->SetIsDead(true);
+			}
+			else
+			{
+				isDead = true;
+			}
 		}
 	//}
 }
 
 void Human::Print()
 {
+	AlzursShieldAction();
 	Organism::Print();
-	SetTextColour(148);//159
-	std::cout << "HU";
+	if (activeAlzursShield)
+	{
+		SetTextColour(148);//159
+	}
+	else
+	{
+		SetTextColour(159);
+	}
+	cout << "HU";
 }
 
 const char* Human::OrganismName() const
