@@ -118,15 +118,18 @@ int main()
 	{
 		ui.Print();
 		xx = world->MakeTurn();
-		Gotoxy(2 * world->GetWidth() + 20, 5);
 		SetTextColour(160);
 		cout << "END OF TURN! Press enter to continue.";
 		world->logs.clear();
 		SetTextColour(15);
 
-		int input;
+		int input = 0;
 		do
 		{
+			if (input == 27)
+			{
+				return 0;
+			}
 			input = _getch();
 		} while (input != 13);
 		system("cls");

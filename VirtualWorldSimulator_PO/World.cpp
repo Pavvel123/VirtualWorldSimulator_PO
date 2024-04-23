@@ -235,18 +235,19 @@ int World::MakeTurn()
 		{
 			if (dynamic_cast<Human*>((*organisms)[i]))
 			{
-				logs += " ++ Human is dead ++";
-				SetTextColour(15);
-				Gotoxy(0, height + 5);
-				cout << logs << '\n';
-				Gotoxy(2 * width + 5, 3);
-				SetTextColour(15);
-				cout << "Human is dead. End of game.";
-				return 0;
+				logs += "\n ++ Human is dead ++\n\n";
+				//SetTextColour(15);
+				//Gotoxy(0, height + 5);
+				//cout << logs << '\n';
+				//Gotoxy(2 * width + 5, 3);
+				//SetTextColour(15);
+				//cout << "Human is dead. End of game.";
+				//return 0;
 			}
 			delete (*organisms)[i];
 			organisms->erase(organisms->begin() + i);
 			organismsLength--;
+			i--;
 		}
 		else
 		{
@@ -358,10 +359,19 @@ void World::SaveToFile(fstream* file)
 			*file << yPos << '\n';
 		}
 		file->close();
+		logs += "##  Board saved to file succesfully.\n";
+		Gotoxy(2 * width + 6, 3);
+		SetTextColour(15);
+		cout << "Board saved to file succesfully.";
 	}
 }
 
 World::~World()
 {
+	int organismsLength = animalsLength + plantsLength;
+	for (int i = 0; i < organismsLength; i++)
+	{
+		delete (*organisms)[i];
+	}
 	delete organisms;
 }

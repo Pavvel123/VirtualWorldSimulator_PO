@@ -9,7 +9,7 @@ using std::endl;
 using std::fstream;
 
 Human::Human(int xPos, int yPos, World& world)
-	: Animal(world), activeAlzursShield(false), timeoutAlzursShield(0)
+	: Animal(world), activeAlzursShield(false), timeoutAlzursShield(5)
 {
 	Organism::strength = 5;
 	Organism::initiative = 4;
@@ -20,7 +20,7 @@ Human::Human(int xPos, int yPos, World& world)
 }
 
 Human::Human(World& world)
-	: Animal(world), activeAlzursShield(false), timeoutAlzursShield(0)
+	: Animal(world), activeAlzursShield(false), timeoutAlzursShield(5)
 {
 	int pos[2]{};
 	world.RandomPos(pos);
@@ -71,7 +71,7 @@ void Human::AlzursShieldActivation()
 	if (!activeAlzursShield && timeoutAlzursShield == 0)
 	{
 		activeAlzursShield = true;
-		timeoutAlzursShield = 6;
+		timeoutAlzursShield = 5;
 		Print();
 		Gotoxy(2 * world.GetWidth() + 3, 4);
 		SetTextColour(96);
@@ -168,6 +168,7 @@ void Human::Action()
 	world.logs += ", ";
 	world.logs += std::to_string(yPos);
 	world.logs += ").\n";
+	AlzursShieldAction();
 }
 
 void Human::Collision(Organism* organism)
@@ -199,7 +200,6 @@ void Human::Collision(Organism* organism)
 
 void Human::Print()
 {
-	AlzursShieldAction();
 	Organism::Print();
 	if (activeAlzursShield)
 	{
