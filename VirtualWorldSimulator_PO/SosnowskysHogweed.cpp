@@ -36,18 +36,17 @@ void SosnowskysHogweed::Action()
 	{
 		if (dynamic_cast<Animal*>(organism))
 		{
-			bool cond1 = organism->GetXPos() == xPos + 1 && organism->GetYPos() == yPos + 1;
-			bool cond2 = organism->GetXPos() == xPos + 1 && organism->GetYPos() == yPos;
-			bool cond3 = organism->GetXPos() == xPos + 1 && organism->GetYPos() == yPos - 1;
-			bool cond4 = organism->GetXPos() == xPos && organism->GetYPos() == yPos + 1;
-			bool cond5 = organism->GetXPos() == xPos && organism->GetYPos() == yPos - 1;
-			bool cond6 = organism->GetXPos() == xPos - 1 && organism->GetYPos() == yPos + 1;
-			bool cond7 = organism->GetXPos() == xPos - 1 && organism->GetYPos() == yPos;
-			bool cond8 = organism->GetXPos() == xPos - 1 && organism->GetYPos() == yPos - 1;
-			if (cond1 || cond2 || cond3 || cond4 || cond5 || cond6 || cond7 || cond8)
+			for (int i = -1; i <= 1; i++)
 			{
-				organism->EreasePrint();
-				organism->SetIsDead(true);
+				for (int k = -1; k <= 1; k++)
+				{
+					if (organism->GetXPos() == xPos + i && organism->GetYPos() == yPos + k && !(i == 0 && k == 0))
+					{
+						organism->EreasePrint();
+						organism->SetIsDead(true);
+						break;
+					}
+				}
 			}
 		}
 	}

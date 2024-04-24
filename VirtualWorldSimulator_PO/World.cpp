@@ -57,6 +57,9 @@ World::World(fstream* file)
 		World& w = *this;
 		string line = "";
 		getline(*file, line);
+		bool activeAlzursShieldTemp = line[0] == '1' ? true : false;
+		int timeoutAlzursShieldTemp = line[2] - '0';
+		getline(*file, line);
 		width = 10 * (line[0] - '0') + line[1] - '0';
 		height = 10 * (line[3] - '0') + line[4] - '0';
 		organisms = new vector<Organism*>();
@@ -94,6 +97,8 @@ World::World(fstream* file)
 			case 'H':
 				Human* human;
 				human = new Human(xPos, yPos, w);
+				human->SetActiveAlzursShield(activeAlzursShieldTemp);
+				human->SetTimeoutAlzursShield(timeoutAlzursShieldTemp);
 				organisms->push_back(human);
 				break;
 			case 'S':
@@ -327,6 +332,17 @@ void World::SaveToFile(fstream* file)
 {
 	if (file->is_open())
 	{
+		for (auto& organism : *organisms)
+		{
+			if (Human* h = dynamic_cast<Human*>(organism))
+			{
+				*file << h->GetActiveAlzursShield() ? '1' : '0';
+				*file << ',';
+				*file << h->GetTimeoutAlzursShield();
+				*file << '\n';
+				break;
+			}
+		}
 		if (width < 10)
 		{
 			*file << '0';
@@ -360,7 +376,7 @@ void World::SaveToFile(fstream* file)
 		}
 		file->close();
 		logs += "##  Board saved to file succesfully.\n";
-		Gotoxy(2 * width + 6, 3);
+		Gotoxy(2 * width + 3, 5);
 		SetTextColour(15);
 		cout << "Board saved to file succesfully.";
 	}

@@ -72,7 +72,13 @@ void Animal::Collision(Organism* organism)
 		int newPos[2]{ xPos, yPos };
 		if (age > 5 && organism->GetAge() > 5)
 		{
-			NewPosIn8Neighbourhood(newPos);
+			try
+			{
+				NewPosIn8Neighbourhood(newPos);
+			}
+			catch (const NoMoreSpaceAvailableException&)
+			{
+			}
 			if (dynamic_cast<Antelope*>(organism))
 			{
 				Antelope* newAntelope = new Antelope(newPos[0], newPos[1], world);

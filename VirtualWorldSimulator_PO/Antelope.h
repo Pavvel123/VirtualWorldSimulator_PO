@@ -5,6 +5,7 @@ class Antelope : public Animal
 public:
 	Antelope(int xPos, int yPos, World& world);
 	Antelope(World& world);
+	void Fight(Organism* organism);
 	void Action() override;
 	void Collision(Organism* organism) override;
 	void Print() override;

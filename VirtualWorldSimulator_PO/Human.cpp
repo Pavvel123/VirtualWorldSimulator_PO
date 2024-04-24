@@ -32,6 +32,26 @@ Human::Human(World& world)
 	Organism::AddToLogBorn();
 }
 
+bool Human::GetActiveAlzursShield() const
+{
+	return activeAlzursShield;
+}
+
+int Human::GetTimeoutAlzursShield() const
+{
+	return timeoutAlzursShield;
+}
+
+void Human::SetActiveAlzursShield(bool value)
+{
+	activeAlzursShield = value;
+}
+
+void Human::SetTimeoutAlzursShield(int value)
+{
+	timeoutAlzursShield = value;
+}
+
 bool Human::IfDefendedTheAttack(Organism* offensive)
 {
 	if (activeAlzursShield && dynamic_cast<Animal*>(offensive))
@@ -203,7 +223,7 @@ void Human::Print()
 	Organism::Print();
 	if (activeAlzursShield)
 	{
-		SetTextColour(148);//159
+		SetTextColour(148);
 	}
 	else
 	{

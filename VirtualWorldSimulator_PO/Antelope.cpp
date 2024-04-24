@@ -1,6 +1,7 @@
 #include "Antelope.h"
 #include "MyFunctions.h"
 #include <iostream>
+#include "NoMoreSpaceAvailableException.h"
 #define GETAWAY_PROBABILITY 50
 
 using std::cout;
@@ -28,6 +29,27 @@ Antelope::Antelope(World& world)
 	Organism::yPos = pos[1];
 	Organism::world = world;
 	Organism::AddToLogBorn();
+}
+
+void Antelope::Fight(Organism* organism)
+{
+	if (organism->IfDefendedTheAttack(this))
+	{
+		xPos = prevXpos;
+		yPos = prevYpos;
+		isDead = false;
+	}
+	else
+	{
+		if (strength > organism->GetStrength())
+		{
+			organism->SetIsDead(true);
+		}
+		else
+		{
+			isDead = true;
+		}
+	}
 }
 
 void Antelope::Action()
@@ -83,29 +105,20 @@ void Antelope::Collision(Organism* organism)
 		{
 			isDead = false;
 			int newPos[2]{xPos, yPos};
-			NewPosIn8Neighbourhood(newPos);
-			xPos = newPos[0];
-			yPos = newPos[1];
+			try
+			{
+				NewPosIn8Neighbourhood(newPos);
+				xPos = newPos[0];
+				yPos = newPos[1];
+			}
+			catch (const NoMoreSpaceAvailableException&)
+			{
+				Fight(organism);
+			}
 		}
 		else
 		{
-			if (organism->IfDefendedTheAttack(this))
-			{
-				xPos = prevXpos;
-				yPos = prevYpos;
-				isDead = false;
-			}
-			else
-			{
-				if (strength > organism->GetStrength())
-				{
-					organism->SetIsDead(true);
-				}
-				else
-				{
-					isDead = true;
-				}
-			}
+			Fight(organism);
 		}
 	}
 }
